@@ -33,6 +33,3 @@ class LocalNeighborhood(PRM):
         #Only need <vertex1> | <vertex2>
         edges_df = data.get_interactome()
         edges_df.to_csv(filename_map['network'],sep='|',index=False,columns=['Interactor1','Interactor2'],header=['protein1','protein2'])
-
-    @staticmethod
-    def run
