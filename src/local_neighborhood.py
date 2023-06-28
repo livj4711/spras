@@ -22,12 +22,20 @@ class LocalNeighborhood(PRM):
             if input_type not in filename_map:
                 raise ValueError(f"{input_type} filename is missing"
 
-        if data.contains_node_columns('prize') or data.containse_node_columns(['sources','targets']):
-            #NODEID is always included in the node table
-            node_df = data.loc[:,'NODEID']
+        if data.contains_node_columns(['prize']):
+            prizes_df = data.request_node_columns(['prize'])
+            node_df_pr = prizes_df.loc[complete.cases(prizes_df), 'NODEID']
+            if data.contains_node_columns(['sources','targets']):
+                sources_targets = data.request_node_columns(['sources', 'targets']
+                node_df_st = sources_targets.loc[(sources_targets['sources'] == True) | (sources_targets['targets'] == True), 'NODEID']
+                node_df = (pd.concat([node_df_pr, node_df_st])).drop_duplicates()
+            else:
+                node_df = node_df_pr
+        elif data.contains_node_columns(['sources','targets']):
+            sources_targets = data.request_node_columns(['sources', 'targets'])
+            node_df = sources_targets.loc[(sources_targets['sources'] == True) | (sources_targets['targets'] == True), 'NODEID']
         else:
             raise ValueError("LocalNeighborhood requires node prizes or sources and targets")
-
         node_df.to_csv(filename_map['nodes'],sep='\t',index=False,columns=['NODEID'],header=['node'])
 
         #Only need <vertex1> | <vertex2>
