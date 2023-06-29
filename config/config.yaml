@@ -70,6 +70,11 @@
                 run1:
                     flow: [1] # The flow must be an int
                     capacity: [1]
+
+        - name: "localneighborhood"
+          params:
+                include: true
+                directed: false
                     
 
  # Here we specify which pathways to run and other file location information.
