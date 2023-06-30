@@ -1,7 +1,6 @@
 from src.prm import PRM
 from pathlib import Path
 from src.util import prepare_volume, run_container
-from src.dataset import contains_node_columns, request_node_columns
 
 import pandas as pd
 
@@ -20,13 +19,13 @@ class LocalNeighborhood(PRM):
         """
         for input_type in LocalNeighborhood.required_inputs:
             if input_type not in filename_map:
-                raise ValueError(f"{input_type} filename is missing"
+                raise ValueError(f"{input_type} filename is missing")
 
-        if data.contains_node_columns(['prize']):
+        if data.contains_node_columns('prize'):
             prizes_df = data.request_node_columns(['prize'])
             node_df_pr = prizes_df.loc[complete.cases(prizes_df), 'NODEID']
             if data.contains_node_columns(['sources','targets']):
-                sources_targets = data.request_node_columns(['sources', 'targets']
+                sources_targets = data.request_node_columns(['sources', 'targets'])
                 node_df_st = sources_targets.loc[(sources_targets['sources'] == True) | (sources_targets['targets'] == True), 'NODEID']
                 node_df = (pd.concat([node_df_pr, node_df_st])).drop_duplicates()
             else:
