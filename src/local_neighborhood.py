@@ -23,11 +23,12 @@ class LocalNeighborhood(PRM):
 
         if data.contains_node_columns('prize'):
             prizes_df = data.request_node_columns(['prize'])
-            node_df_pr = prizes_df.loc[complete.cases(prizes_df), 'NODEID']
+            # node_df_pr = prizes_df.loc[complete.cases(prizes_df), 'NODEID']
+            node_df_pr = prizes_df.loc[:,'NODEID']
             if data.contains_node_columns(['sources','targets']):
                 sources_targets = data.request_node_columns(['sources', 'targets'])
                 node_df_st = sources_targets.loc[(sources_targets['sources'] == True) | (sources_targets['targets'] == True), 'NODEID']
-                node_df = (pd.concat([node_df_pr, node_df_st])).drop_duplicates()
+                node_df = (pd.concat([prizes_df, node_df_st])).drop_duplicates()
             else:
                 node_df = node_df_pr
         elif data.contains_node_columns(['sources','targets']):
@@ -69,8 +70,8 @@ class LocalNeighborhood(PRM):
 
         command = ['python',
                    '/LocalNeighborhood/local_neighborhood.py',
-                   '--network_file', network_file,
-                   '--node_file', node_file,
+                   '--network', network_file,
+                   '--nodes', node_file,
                    '--output', mapped_output_file]
 
         print('Running LocalNeighborhood with arguments: {}'.format(' '.join(command)), flush=True)
