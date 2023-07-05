@@ -126,3 +126,11 @@ jobs:
         tags: latest
         cache_froms: reedcompbio/mincostflow:latest
         push: false
+    - name: Build LocalNeighborhood Docker image
+      uses: docker/build-push-action@v1
+      with:
+        path: docker-wrappers/LocalNeighborhood/.
+        dockerfile: docker-wrappers/LocalNeighborhood/Dockerfile
+        repository: otjohnson/local-neighborhood
+        tags: latest
+        push: false
