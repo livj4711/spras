@@ -1,4 +1,5 @@
 import pytest
+import shutil
 import sys
 from pathlib import Path
 from src.util import compare_files
@@ -90,7 +91,7 @@ class TestLocalNeighborhood:
         LocalNeighborhood.run(
             network_file=TEST_DIR+'input/ln-network.txt',
             nodes_file=TEST_DIR+'input/ln-nodes.txt',
-            output_file=OUT_FILE
+            output_file=OUT_FILE,
             singularity=True
         )
         assert out_path.exists()
