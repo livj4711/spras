@@ -64,7 +64,7 @@ class TestLocalNeighborhood:
     """
     Test the expected error is raised when nodes argument is missing
     """
-    def test_localneighborhood_missing(self):
+    def test_localneighborhood_missing_nodes(self):
         with pytest.raises(ValueError):
             # No nodes
             LocalNeighborhood.run(
@@ -74,7 +74,7 @@ class TestLocalNeighborhood:
     """
     Test the expected error is raised when network argument is missing
     """
-    def test_localneighborhood_missing(self):
+    def test_localneighborhood_missing_network(self):
         with pytest.raises(ValueError):
             # No network
             LocalNeighborhood.run(
