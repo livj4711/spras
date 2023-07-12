@@ -51,7 +51,7 @@ class LocalNeighborhood(PRM):
         @param output_file: path to the output pathway file (required)
         @param singularity: if True, run using the Singularity container instead of the Docker container
         """
-        if network is None or nodes in None or output_file is None:
+        if network is None or nodes is None or output_file is None:
             raise ValueError('Required LocalNeighborhood arguments are missing')
 
         work_dir = '/spras'
