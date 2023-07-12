@@ -55,10 +55,9 @@ class TestLocalNeighborhood:
         out_path.unlink(missing_ok=True)
         # Only include required arguments
         LocalNeighborhood.run(
-            network_file=TEST_DIR+'input/ln-network.txt',
-            nodes_file=TEST_DIR+'input/ln-nodes.txt',
-            output_file=OUT_FILE
-        )
+            network=Path(TEST_DIR, 'input', 'ln-network.txt'),
+            nodes=Path(TEST_DIR, 'input', 'ln-nodes.txt'),
+            output_file=OUT_FILE)
         assert out_path.exists()
 
     """
@@ -68,7 +67,7 @@ class TestLocalNeighborhood:
         with pytest.raises(ValueError):
             # No nodes
             LocalNeighborhood.run(
-                network_file=TEST_DIR + 'input/ln-network.txt',
+                network=Path(TEST_DIR, 'input', 'ln-network.txt'),
                 output_file=OUT_FILE)
 
     """
@@ -78,7 +77,7 @@ class TestLocalNeighborhood:
         with pytest.raises(ValueError):
             # No network
             LocalNeighborhood.run(
-                nodes_file=TEST_DIR+'input/ln-nodes.txt',
+                nodes=Path(TEST_DIR, 'input', 'ln-nodes.txt'),
                 output_file=OUT_FILE)
 
     # Only run Singularity test if the binary is available on the system
@@ -89,8 +88,8 @@ class TestLocalNeighborhood:
         out_path.unlink(missing_ok=True)
         # Only include required arguments and run with Singularity
         LocalNeighborhood.run(
-            network_file=TEST_DIR+'input/ln-network.txt',
-            nodes_file=TEST_DIR+'input/ln-nodes.txt',
+            network=Path(TEST_DIR, 'input', 'ln-network.txt'),
+            nodes=Path(TEST_DIR, 'input', 'ln-nodes.txt'),
             output_file=OUT_FILE,
             singularity=True
         )
