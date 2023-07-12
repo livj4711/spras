@@ -14,7 +14,6 @@ from local_neighborhood import local_neighborhood
 TEST_DIR = Path('test', 'LocalNeighborhood/')
 OUT_FILE = Path(TEST_DIR, 'output', 'ln-output.txt')
 
-
 class TestLocalNeighborhood:
     """
     Run the local neighborhood algorithm on the example input files and check the output matches the expected output
@@ -51,13 +50,13 @@ class TestLocalNeighborhood:
     Run test for the Local Neighborhood run function
     """
     def test_localneighborhood_required(self):
-        out_path = Path(OUT_FILE)
+        out_path = OUT_FILE
         out_path.unlink(missing_ok=True)
         # Only include required arguments
         LocalNeighborhood.run(
-            network=Path(TEST_DIR, 'input', 'ln-network.txt'),
-            nodes=Path(TEST_DIR, 'input', 'ln-nodes.txt'),
-            output_file=OUT_FILE)
+            network=str(Path(TEST_DIR, 'input', 'ln-network.txt')),
+            nodes=str(Path(TEST_DIR, 'input', 'ln-nodes.txt')),
+            output_file=str(OUT_FILE))
         assert out_path.exists()
 
     """
@@ -67,8 +66,8 @@ class TestLocalNeighborhood:
         with pytest.raises(ValueError):
             # No nodes
             LocalNeighborhood.run(
-                network=Path(TEST_DIR, 'input', 'ln-network.txt'),
-                output_file=OUT_FILE)
+                network=str(Path(TEST_DIR, 'input', 'ln-network.txt')),
+                output_file=str(OUT_FILE))
 
     """
     Test the expected error is raised when network argument is missing
@@ -77,8 +76,8 @@ class TestLocalNeighborhood:
         with pytest.raises(ValueError):
             # No network
             LocalNeighborhood.run(
-                nodes=Path(TEST_DIR, 'input', 'ln-nodes.txt'),
-                output_file=OUT_FILE)
+                nodes=str(Path(TEST_DIR, 'input', 'ln-nodes.txt')),
+                output_file=str(OUT_FILE))
 
     # Only run Singularity test if the binary is available on the system
     # spython is only available on Unix, but do not explicitly skip non-Unix platforms
