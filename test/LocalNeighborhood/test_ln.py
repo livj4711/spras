@@ -87,9 +87,9 @@ class TestLocalNeighborhood:
         out_path.unlink(missing_ok=True)
         # Only include required arguments and run with Singularity
         LocalNeighborhood.run(
-            network=Path(TEST_DIR, 'input', 'ln-network.txt'),
-            nodes=Path(TEST_DIR, 'input', 'ln-nodes.txt'),
-            output_file=OUT_FILE,
+            network=str(Path(TEST_DIR, 'input', 'ln-network.txt')),
+            nodes=str(Path(TEST_DIR, 'input', 'ln-nodes.txt')),
+            output_file=str(OUT_FILE),
             singularity=True
         )
         assert out_path.exists()
