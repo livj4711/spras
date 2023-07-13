@@ -1,7 +1,10 @@
 import pytest
+import shutil
 import sys
 from pathlib import Path
 from src.util import compare_files
+from src.local_neighborhood import LocalNeighborhood
+
 # TODO consider refactoring to simplify the import
 # Modify the path because of the - in the directory
 SPRAS_ROOT = Path(__file__).parent.parent.parent.absolute()
@@ -10,7 +13,6 @@ from local_neighborhood import local_neighborhood
 
 TEST_DIR = Path('test', 'LocalNeighborhood/')
 OUT_FILE = Path(TEST_DIR, 'output', 'ln-output.txt')
-
 
 class TestLocalNeighborhood:
     """
@@ -44,3 +46,51 @@ class TestLocalNeighborhood:
                                output_file=OUT_FILE)
 
     # Write tests for the Local Neighborhood run function here
+    """
+    Run test for the Local Neighborhood run function
+    """
+    def test_localneighborhood_required(self):
+        out_path = OUT_FILE
+        out_path.unlink(missing_ok=True)
+        # Only include required arguments
+        LocalNeighborhood.run(
+            network=str(Path(TEST_DIR, 'input', 'ln-network.txt')),
+            nodes=str(Path(TEST_DIR, 'input', 'ln-nodes.txt')),
+            output_file=str(OUT_FILE))
+        assert out_path.exists()
+
+    """
+    Test the expected error is raised when nodes argument is missing
+    """
+    def test_localneighborhood_missing_nodes(self):
+        with pytest.raises(ValueError):
+            # No nodes
+            LocalNeighborhood.run(
+                network=str(Path(TEST_DIR, 'input', 'ln-network.txt')),
+                output_file=str(OUT_FILE))
+
+    """
+    Test the expected error is raised when network argument is missing
+    """
+    def test_localneighborhood_missing_network(self):
+        with pytest.raises(ValueError):
+            # No network
+            LocalNeighborhood.run(
+                nodes=str(Path(TEST_DIR, 'input', 'ln-nodes.txt')),
+                output_file=str(OUT_FILE))
+
+    # Only run Singularity test if the binary is available on the system
+    # spython is only available on Unix, but do not explicitly skip non-Unix platforms
+    @pytest.mark.skipif(not shutil.which('singularity'), reason='Singularity not found on system')
+    def test_localneighborhood_singularity(self):
+        out_path = Path(OUT_FILE)
+        out_path.unlink(missing_ok=True)
+        # Only include required arguments and run with Singularity
+        LocalNeighborhood.run(
+            network=str(Path(TEST_DIR, 'input', 'ln-network.txt')),
+            nodes=str(Path(TEST_DIR, 'input', 'ln-nodes.txt')),
+            output_file=str(OUT_FILE),
+            singularity=True
+        )
+        assert out_path.exists()
+
